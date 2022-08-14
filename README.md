@@ -184,6 +184,91 @@ http-post {
 
 ```
 
+### ./c2lint
+```
+===============
+default
+===============
+
+http-get
+--------
+GET / HTTP/1.1
+Host: example.com
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+Cookie: YfIEOvrR57hbCoYlnsBx5TjB5IA
+
+HTTP/1.1 200 OK
+Content-Length: 1256
+Accept-Ranges: bytes
+Age: 441594
+Cache-Control: max-age=604800
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 14 Aug 2022 17:45:50 GMT
+Etag: '3147526947'
+Expires: Sun, 21 Aug 2022 17:45:50 GMT
+Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+Server: ECS (oxr/832D)
+Vary: Accept-Encoding
+X-Cache: HIT
+Connection: close
+
+bqR9F2BLvQLP2VBRQVzNVl4w4tclwhAdyf8206NJ8opj6t-JT1cYgjODWx6U0851dR4JgFXXKpUxpxHmmxUTy1sKZ-M
+
+http-post
+---------
+GET //?id=DDovyDgKGfg HTTP/1.1
+Host: example.com
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+data: 4IUomDfekj7kAc56vQLFOw5fTsM
+
+HTTP/1.1 200 OK
+Content-Length: 1256
+Accept-Ranges: bytes
+Age: 441594
+Cache-Control: max-age=604800
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 14 Aug 2022 17:45:50 GMT
+Etag: '3147526947'
+Expires: Sun, 21 Aug 2022 17:45:50 GMT
+Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+Server: ECS (oxr/832D)
+Vary: Accept-Encoding
+X-Cache: HIT
+Connection: close
+
+NpJwUg
+
+
+[+] POST 3x check passed
+[+] .http-get.server.output size is good
+[+] .http-get.client size is good
+[+] .http-post.client size is good
+[+] .http-get.client.metadata transform+mangle+recover passed (1 byte[s])
+[+] .http-get.client.metadata transform+mangle+recover passed (100 byte[s])
+[+] .http-get.client.metadata transform+mangle+recover passed (128 byte[s])
+[+] .http-get.client.metadata transform+mangle+recover passed (256 byte[s])
+[+] .http-get.server.output transform+mangle+recover passed (0 byte[s])
+[+] .http-get.server.output transform+mangle+recover passed (1 byte[s])
+[+] .http-get.server.output transform+mangle+recover passed (48248 byte[s])
+[+] .http-get.server.output transform+mangle+recover passed (1048576 byte[s])
+[+] .http-post.client.id transform+mangle+recover passed (4 byte[s])
+[+] .http-post.client.output transform+mangle+recover passed (0 byte[s])
+[+] .http-post.client.output transform+mangle+recover passed (1 byte[s])
+[+] .http-post.client.output chunks results
+[+] .http-post.client.output transform+mangle+recover passed (33 byte[s])
+[+] .http-post.client.output transform+mangle+recover passed (128 byte[s])
+[+] Beacon profile specifies an HTTP Cookie header. Will tell WinINet to allow this.
+```
 
 Work in progress, will be updated if I think of ideas. Feel free to submit issues/PRs/suggestions.
 
