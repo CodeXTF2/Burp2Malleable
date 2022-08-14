@@ -15,3 +15,8 @@ Work in progress, will be updated if I think of ideas. Feel free to submit issue
 
 ## TODO
 - Detect base64 strings in original request and response and automatically use those to store beacon data
+  
+  
+## Credits
+- https://github.com/Porchetta-Industries/pyMalleableC2
+- https://github.com/xscorp/Burpee
