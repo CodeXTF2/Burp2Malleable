@@ -90,6 +90,7 @@ reqfile = open("tempreq").read()
 resfile = open("tempres").read()
 requri = reqfile.split("\n")[0].split(" ")[1].split("?")[0]
 
+
 try:
     reqparams = reqfile.split("\n")[0].split(" ")[1].split("?")[1].split("&")
 except:
@@ -158,6 +159,8 @@ while beaconresponse[0] == "body" and body_used:
 if beaconid[0] == "body":
     body_used = True
 
+taskingprepend = input("What would you like to prepend to the beacon taskings in the response body?\n> ")
+taskingappend = input("What would you like to apppend to the beacon taskings in the response body?\n> ")
 
 profilebanner = """
 ############################################################################
@@ -205,8 +208,11 @@ else:
 client_get.add_code_block(metadata)
 server_get = ServerBlock()
 output_get = OutputBlock()
+
 output_get.add_statement("mask")
 output_get.add_statement("base64url")
+output_get.add_statement("prepend",taskingprepend)
+output_get.add_statement("append",taskingappend)
 #beacon tasking
 output_get.add_statement("print")
 
