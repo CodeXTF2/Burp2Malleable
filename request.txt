@@ -1,4 +1,4 @@
-POST /api/v9/auth/login HTTP/1.1
+POST /api/v9/auth/login?sad=yes HTTP/1.1
 Host: discord.com
 X-Super-Properties: eyJvcyI6IldpbH0=
 X-Fingerprint: 1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc

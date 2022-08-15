@@ -184,6 +184,9 @@ client_get = ClientBlock()
 metadata = MetadataBlock()
 for x in reqheaders.items():
     client_get.add_statement("header", x[0], x[1])
+for x in reqparams_dict.keys():
+    client_get.add_statement("parameter", x, reqparams_dict.get(x))
+
 
 metadata.add_statement("mask")
 metadata.add_statement("base64url")
@@ -244,7 +247,8 @@ http_post.set_option("uri", requri.upper())
 
 #http.post.client
 client_post = ClientBlock()
-
+for x in reqparams_dict.keys():
+    client_post.add_statement("parameter", x, reqparams_dict.get(x))
 #add the output_post block for the client
 output_post = OutputBlock()
 output_post.add_statement("mask")

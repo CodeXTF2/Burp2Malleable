@@ -14,13 +14,15 @@ http-get {
     client {
         header "Host" "discord.com";
         header "X-Super-Properties" "eyJvcyI6IldpbH0=";
+        header "X-Fingerprint" "1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
+        parameter "sad" "yes";
         metadata {
             mask;
             base64url;
-            prepend "1008685949565288488.";
+            prepend "";
             append "";
-            header "X-Fingerprint";
+            header "a";
         }
     }
     server {
@@ -58,20 +60,20 @@ http-post {
     set verb "POST";
     set uri "/API/V9/AUTH/LOGIN";
     client {
+        parameter "sad" "yes";
         header "Host" "discord.com";
         header "X-Super-Properties" "eyJvcyI6IldpbH0=";
+        header "X-Fingerprint" "1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
         id {
             mask;
             base64url;
-            parameter "id";
+            header "b";
         }
         output {
             mask;
             base64url;
-            prepend "{'login':'a@a.com','password':'bsdfv','undelete':false,'cap";
-            append "tcha_key':null,'login_source':null,'gift_code_sku_id':null}";
-            print;
+            header "c";
         }
     }
     server {
