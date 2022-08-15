@@ -26,16 +26,41 @@ def printbold(msg):
 def printmsg(msg):
   print(colored("[*] ","cyan",attrs=["bold"]) + msg)
 
+def blend(string):
+    isok = False
+    while not isok:
+        print("The current value of the field is:\n" + colored(string,"green"))
+        toreplace = input("\nWhat part would you like to replace with the data?\n> ")
+        strarray = string.split(toreplace)
+        while len(strarray) <2:
+            strarray.append("")
+        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}DDovyDgKGfg{strarray[1]}\n","green"))
+        isok_str = input("Does this look ok? (Y/n)\n> ")
+        if isok_str == '' or isok_str.lower() == 'y':
+            isok=True
+
+    return strarray[0],strarray[1]
 
 def storelocation(item):
-    print(colored(toolbanner,"cyan"))
+    global reqheaders
+    global reqparams_dict
+    prepend = ''
+    append = ''
     location = input(f"Where do you want to store {item}?\n\t1. Header\n\t2. Body\n\t3. URI-Param\n>")
     if location == "1":
         headername = input("Header name: ")
-        return ['header',headername]
+        if headername in reqheaderlist:
+            print("This header already exists.")
+            prepend,append = blend(str(reqheaders.get(headername)))
+            reqheaders.pop(headername)
+        return ['header',headername,prepend,append]
     elif location == "3":
         paramname = input("Param name: ")
-        return ['uriparam',paramname]
+        if paramname in reqparams_dict.keys():
+            print(f"This parameter {paramname} already exists.")
+            prepend,append = blend(reqparams_dict[paramname])
+            reqparams_dict.pop(paramname)
+        return ['uriparam',paramname,prepend,append]
     else:
         return ['body','']
 
@@ -60,9 +85,16 @@ resfile = open("tempres").read()
 requri = reqfile.split("\n")[0].split(" ")[1].split("?")[0]
 
 try:
-    reqparams = reqfile.split("\n")[0].split(" ")[1].split("?")[1]
+    reqparams = reqfile.split("\n")[0].split(" ")[1].split("?")[1].split("&")
 except:
     reqparams= ""
+
+reqparams_dict = {}
+for x in reqparams:
+    x_split = x.split("=")
+    key = x_split[0]
+    value = x_split[1]
+    reqparams_dict[key] = value
 reqmethod = reqfile.split("\n")[0].split(" ")[0]
 
 reqheaders, reqdata = burpee.parse_request("tempreq")
@@ -77,6 +109,9 @@ resfile_commented = ""
 for x in resfile.split("\n"):
     resfile_commented += "# " + x + "\n"
 
+reqheaderlist = []
+for x in reqheaders.items():
+    reqheaderlist.append(x[0])
 
 
 original = "# Original HTTP request\n#\n" + reqfile_commented + "\n#"
@@ -146,12 +181,18 @@ metadata.add_statement("base64url")
 
 #metadata
 if beaconmeta[0] == "body":
+    metadata.add_statement("prepend",beaconmeta[2])
+    metadata.add_statement("append",beaconmeta[3])
     metadata.add_statement("print")
     printmsg(f"Storing beacon metadata in request body")
 elif beaconmeta[0] == "uriparam":
+    metadata.add_statement("prepend",beaconmeta[2])
+    metadata.add_statement("append",beaconmeta[3])
     metadata.add_statement("parameter",beaconmeta[1])
     printmsg(f"Storing beacon metadata in the URI parameter {beaconmeta[1]}")
 else:
+    metadata.add_statement("prepend",beaconmeta[2])
+    metadata.add_statement("append",beaconmeta[3])
     metadata.add_statement("header",beaconmeta[1])
     printmsg(f"Storing beacon metadata in request header {beaconmeta[1]}")
 
