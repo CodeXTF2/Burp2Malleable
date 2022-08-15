@@ -161,7 +161,6 @@ while beaconresponse[0] == "body" and body_used:
 if beaconid[0] == "body":
     body_used = True
 
-printbold("\nThis is the response body, where beacons taskings will be stored.")
 taskingprepend,taskingappend = blend(resbody)
 
 # taskingprepend = input("What would you like to prepend to the beacon taskings in the response body?\n> ")
