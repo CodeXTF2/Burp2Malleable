@@ -34,7 +34,7 @@ def blend(string):
         strarray = string.split(toreplace)
         while len(strarray) <2:
             strarray.append("")
-        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}DDovyDgKGfg{strarray[1]}\n","green"))
+        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}dGVzdGRhdGE={strarray[1]}\n","green"))
         isok_str = input("Does this look ok? (Y/n)\n> ")
         if isok_str == '' or isok_str.lower() == 'y':
             isok=True
