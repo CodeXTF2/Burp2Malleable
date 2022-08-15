@@ -9,67 +9,69 @@
 # !!! Make sure to run this profile through c2lint before using !!!
 
 http-get {
-    set verb "GET";
-    set uri "/sad";
+    set verb "POST";
+    set uri "/api/v9/auth/login";
     client {
-        header "Host" "example.com";
-        header "Upgrade-Insecure-Requests" "1";
+        header "Host" "discord.com";
+        header "X-Super-Properties" "eyJvcyI6IldpbH0=";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
-        header "Accept" "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-        header "Accept-Encoding" "gzip, deflate";
-        header "Accept-Language" "en-US,en;q=0.9";
-        header "Connection" "close";
         metadata {
             mask;
             base64url;
-            prepend "";
+            prepend "1008685949565288488.";
             append "";
-            header "a";
+            header "X-Fingerprint";
         }
     }
     server {
         output {
             mask;
             base64url;
-            prepend "prependddddddddddd";
-            append "appendddddddddddd";
+            prepend "{'captcha_key': ['captcha-required'], 'captcha_sitekey': 'f5561";
+            prepend "";
+            append "";
+            append "ba9-8f1e-40ca-9b5b-a0b3f719ef34', 'captcha_service': 'hcaptcha'}";
             print;
         }
-        header "Accept-Ranges" "bytes";
-        header "Age" "441594";
-        header "Cache-Control" "max-age=604800";
-        header "Content-Type" "text/html; charset=UTF-8";
-        header "Date" "Sun, 14 Aug 2022 17:45:50 GMT";
-        header "Etag" "'3147526947'";
-        header "Expires" "Sun, 21 Aug 2022 17:45:50 GMT";
-        header "Last-Modified" "Thu, 17 Oct 2019 07:18:26 GMT";
-        header "Server" "ECS (oxr/832D)";
-        header "Vary" "Accept-Encoding";
-        header "X-Cache" "HIT";
-        header "Content-Length" "1256";
+        header "Date" "Mon, 15 Aug 2022 10:38:13 GMT";
+        header "Content-Type" "application/json";
+        header "Content-Length" "127";
         header "Connection" "close";
+        header "access-control-allow-origin" "https://discord.com";
+        header "access-control-allow-credentials" "true";
+        header "access-control-allow-methods" "POST, GET, PUT, PATCH, DELETE";
+        header "access-control-allow-headers" "Content-Type, Authorization, X-Audit-Log-Reason, X-Track, X-Super-Properties, X-Context-Properties, X-Failed-Requests, X-Fingerprint, X-RPC-Proxy, X-Discord-Locale, X-Debug-Options, x-client-trace-id, If-None-Match, Range, X-RateLimit-Precision";
+        header "strict-transport-security" "max-age=31536000; includeSubDomains; preload";
+        header "x-envoy-upstream-service-time" "40";
+        header "Via" "1.1 google";
+        header "Alt-Svc" "h3=':443'; ma=86400, h3-29=':443'; ma=86400";
+        header "CF-Cache-Status" "DYNAMIC";
+        header "Expect-CT" "max-age=604800, report-uri='https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct'";
+        header "Report-To" "{'endpoints':[{'url':'https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=NVkTuc0Tiecsv86A00v9WwDmAGBhWkOIUSbzNAmn7bbAEuwnrV8j1%2BNMu8qkv6yLwwy6izaKGbhzvNCLUrKlKUm1mjN8L3e2qu4mjYSmMI%2Bj5mLbso23JbU1P2Ah'}],'group':'cf-nel','max_age':604800}";
+        header "NEL" "{'success_fraction':0,'report_to':'cf-nel','max_age':604800}";
+        header "X-Content-Type-Options" "nosniff";
+        header "Server" "cloudflare";
+        header "CF-RAY" "73b14ca4bbd187d8-SIN";
     }
 }
 http-post {
-    set verb "GET";
-    set uri "/SAD";
+    set verb "POST";
+    set uri "/API/V9/AUTH/LOGIN";
     client {
-        header "Host" "example.com";
-        header "Upgrade-Insecure-Requests" "1";
+        header "Host" "discord.com";
+        header "X-Super-Properties" "eyJvcyI6IldpbH0=";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
-        header "Accept" "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-        header "Accept-Encoding" "gzip, deflate";
-        header "Accept-Language" "en-US,en;q=0.9";
-        header "Connection" "close";
         id {
             mask;
             base64url;
-            header "b";
+            parameter "id";
         }
         output {
             mask;
             base64url;
-            header "c";
+            prepend "{'login':'a@a.com','password':'bsdfv','undelete':false,'cap";
+            append "tcha_key':null,'login_source':null,'gift_code_sku_id':null}";
+            print;
         }
     }
     server {
@@ -78,18 +80,24 @@ http-post {
             base64url;
             print;
         }
-        header "Accept-Ranges" "bytes";
-        header "Age" "441594";
-        header "Cache-Control" "max-age=604800";
-        header "Content-Type" "text/html; charset=UTF-8";
-        header "Date" "Sun, 14 Aug 2022 17:45:50 GMT";
-        header "Etag" "'3147526947'";
-        header "Expires" "Sun, 21 Aug 2022 17:45:50 GMT";
-        header "Last-Modified" "Thu, 17 Oct 2019 07:18:26 GMT";
-        header "Server" "ECS (oxr/832D)";
-        header "Vary" "Accept-Encoding";
-        header "X-Cache" "HIT";
-        header "Content-Length" "1256";
+        header "Date" "Mon, 15 Aug 2022 10:38:13 GMT";
+        header "Content-Type" "application/json";
+        header "Content-Length" "127";
         header "Connection" "close";
+        header "access-control-allow-origin" "https://discord.com";
+        header "access-control-allow-credentials" "true";
+        header "access-control-allow-methods" "POST, GET, PUT, PATCH, DELETE";
+        header "access-control-allow-headers" "Content-Type, Authorization, X-Audit-Log-Reason, X-Track, X-Super-Properties, X-Context-Properties, X-Failed-Requests, X-Fingerprint, X-RPC-Proxy, X-Discord-Locale, X-Debug-Options, x-client-trace-id, If-None-Match, Range, X-RateLimit-Precision";
+        header "strict-transport-security" "max-age=31536000; includeSubDomains; preload";
+        header "x-envoy-upstream-service-time" "40";
+        header "Via" "1.1 google";
+        header "Alt-Svc" "h3=':443'; ma=86400, h3-29=':443'; ma=86400";
+        header "CF-Cache-Status" "DYNAMIC";
+        header "Expect-CT" "max-age=604800, report-uri='https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct'";
+        header "Report-To" "{'endpoints':[{'url':'https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=NVkTuc0Tiecsv86A00v9WwDmAGBhWkOIUSbzNAmn7bbAEuwnrV8j1%2BNMu8qkv6yLwwy6izaKGbhzvNCLUrKlKUm1mjN8L3e2qu4mjYSmMI%2Bj5mLbso23JbU1P2Ah'}],'group':'cf-nel','max_age':604800}";
+        header "NEL" "{'success_fraction':0,'report_to':'cf-nel','max_age':604800}";
+        header "X-Content-Type-Options" "nosniff";
+        header "Server" "cloudflare";
+        header "CF-RAY" "73b14ca4bbd187d8-SIN";
     }
 }

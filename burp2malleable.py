@@ -89,8 +89,8 @@ with open("tempres","w+",errors='ignore') as f:
 reqfile = open("tempreq").read()
 resfile = open("tempres").read()
 requri = reqfile.split("\n")[0].split(" ")[1].split("?")[0]
-
-
+resbody = ''.join(resfile.split("\n\n")[1:])
+reqbody = ''.join(reqfile.split("\n\n")[1:])
 try:
     reqparams = reqfile.split("\n")[0].split(" ")[1].split("?")[1].split("&")
 except:
@@ -209,10 +209,16 @@ client_get.add_code_block(metadata)
 server_get = ServerBlock()
 output_get = OutputBlock()
 
+#add the response body
+reshalf1 = resbody[:len(resbody)//2]
+reshalf2 = resbody[len(resbody)//2:]
+
 output_get.add_statement("mask")
 output_get.add_statement("base64url")
+output_get.add_statement("prepend",reshalf1)
 output_get.add_statement("prepend",taskingprepend)
 output_get.add_statement("append",taskingappend)
+output_get.add_statement("append",reshalf2)
 #beacon tasking
 output_get.add_statement("print")
 
@@ -246,6 +252,11 @@ output_post.add_statement("base64url")
 
 #beaconupload
 if beaconresponse[0] == "body":
+    #add the req body
+    reqhalf1 = reqbody[:len(reqbody)//2]
+    reqhalf2 = reqbody[len(reqbody)//2:]
+    output_post.add_statement("prepend",reqhalf1)
+    output_post.add_statement("append",reqhalf2)
     output_post.add_statement("print")
     printmsg(f"Storing beacon response in request body")
 elif beaconresponse[0] == "uriparam":

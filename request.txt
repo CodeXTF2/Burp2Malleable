@@ -1,9 +1,7 @@
-GET /sad?gay=true&blec=no HTTP/1.1
-Host: example.com
-Upgrade-Insecure-Requests: 1
+POST /api/v9/auth/login HTTP/1.1
+Host: discord.com
+X-Super-Properties: eyJvcyI6IldpbH0=
+X-Fingerprint: 1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Accept-Encoding: gzip, deflate
-Accept-Language: en-US,en;q=0.9
-Connection: close
 
+{"login":"a@a.com","password":"bsdfv","undelete":false,"captcha_key":null,"login_source":null,"gift_code_sku_id":null}
