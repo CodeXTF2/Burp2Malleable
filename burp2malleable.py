@@ -50,22 +50,24 @@ def storelocation(item):
     if location == "1":
         print("These are your current headers")
         for x in reqheaders.keys():
-            printmsg(x)
+            printmsg(f"{x}: {reqheaders[x]}")
         headername = input("Header name: ")
         if headername in reqheaderlist:
-            print("This header already exists.")
             prepend,append = blend(str(reqheaders.get(headername)))
             reqheaders.pop(headername)
+        else:
+            printmsg(f"Header {headername} not found. Added as new header")
         return ['header',headername,prepend,append]
     elif location == "3":
         print("These are your current params")
         for x in reqparams_dict.keys():
-            printmsg(x)
+            printmsg(f"{x}={reqparams_dict[x]}")
         paramname = input("Param name: ")
         if paramname in reqparams_dict.keys():
-            print(f"This parameter {paramname} already exists.")
             prepend,append = blend(reqparams_dict[paramname])
             reqparams_dict.pop(paramname)
+        else:
+            printmsg(f"Parameter {paramname} not found. Added as new header")
         return ['uriparam',paramname,prepend,append]
     else:
         return ['body','']
