@@ -48,6 +48,9 @@ def storelocation(item):
     append = ''
     location = input(f"Where do you want to store {item}?\n\t1. Header\n\t2. Body\n\t3. URI-Param\n>")
     if location == "1":
+        print("These are your current headers")
+        for x in reqheaders.keys():
+            printmsg(x)
         headername = input("Header name: ")
         if headername in reqheaderlist:
             print("This header already exists.")
@@ -55,6 +58,9 @@ def storelocation(item):
             reqheaders.pop(headername)
         return ['header',headername,prepend,append]
     elif location == "3":
+        print("These are your current params")
+        for x in reqparams_dict.keys():
+            printmsg(x)
         paramname = input("Param name: ")
         if paramname in reqparams_dict.keys():
             print(f"This parameter {paramname} already exists.")

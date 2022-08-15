@@ -1,4 +1,4 @@
-GET / HTTP/1.1
+GET /sad?gay=true&blec=no HTTP/1.1
 Host: example.com
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
