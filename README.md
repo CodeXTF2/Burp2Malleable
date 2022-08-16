@@ -1,5 +1,7 @@
 # Burp2Malleable
+<p align="center">
 <img src="logo.png" width="300" height="200">
+</p>
 Quick python utility I wrote to turn HTTP requests from burp suite into Cobalt Strike Malleable C2 profiles.    
 It lets you take captured/crafted requests from BurpSuite (or ZAP, POSTMAN etc.) of what you want your traffic to look like/blend in with, and turns them into CobaltStrike Malleable C2 profiles. It allows the operator to choose where their data is stored and in what format, so that the traffic looks as clean as possible.
 
