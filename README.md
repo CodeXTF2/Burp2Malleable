@@ -66,23 +66,23 @@ http-get {
     client {
         header "Host" "discord.com";
         header "X-Super-Properties" "eyJvcyI6IldpbH0=";
+        header "X-Fingerprint" "1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
+        parameter "sad" "yes";
         metadata {
             mask;
             base64url;
-            prepend "1008685949565288488.";
+            prepend "";
             append "";
-            header "X-Fingerprint";
+            header "a";
         }
     }
     server {
         output {
             mask;
             base64url;
-            prepend "{'captcha_key': ['captcha-required'], 'captcha_sitekey': 'f5561";
-            prepend "";
-            append "";
-            append "ba9-8f1e-40ca-9b5b-a0b3f719ef34', 'captcha_service': 'hcaptcha'}";
+            prepend "{'captcha_key': ['captcha-required'], 'captcha_sitekey': '";
+            append "', 'captcha_service': 'hcaptcha'}";
             print;
         }
         header "Date" "Mon, 15 Aug 2022 10:38:13 GMT";
@@ -110,13 +110,15 @@ http-post {
     set verb "POST";
     set uri "/API/V9/AUTH/LOGIN";
     client {
+        parameter "sad" "yes";
         header "Host" "discord.com";
         header "X-Super-Properties" "eyJvcyI6IldpbH0=";
+        header "X-Fingerprint" "1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc";
         header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
         id {
             mask;
             base64url;
-            parameter "id";
+            header "b";
         }
         output {
             mask;
@@ -130,6 +132,8 @@ http-post {
         output {
             mask;
             base64url;
+            prepend "{'captcha_key': ['captcha-required'], 'captcha_sitekey': 'f5561";
+            append "ba9-8f1e-40ca-9b5b-a0b3f719ef34', 'captcha_service': 'hcaptcha'}";
             print;
         }
         header "Date" "Mon, 15 Aug 2022 10:38:13 GMT";
@@ -154,6 +158,7 @@ http-post {
     }
 }
 
+
 ```
 
 ### ./c2lint
@@ -164,11 +169,12 @@ default
 
 http-get
 --------
-POST /api/v9/auth/login HTTP/1.1
+POST /api/v9/auth/login?sad=yes HTTP/1.1
 Host: discord.com
 X-Super-Properties: eyJvcyI6IldpbH0=
+X-Fingerprint: 1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
-X-Fingerprint: 1008685949565288488.Bbdj-CZg2yQTK6uJvwJSd8o7okc
+a: xX1eg2uo_iO0ahkT32lKnTqae5A
 
 HTTP/1.1 200 OK
 Content-Length: 127
@@ -191,17 +197,19 @@ X-Content-Type-Options: nosniff
 Server: cloudflare
 CF-RAY: 73b14ca4bbd187d8-SIN
 
-{'captcha_key': ['captcha-required'], 'captcha_sitekey': 'f5561s1EuD2sc4A1wVaog4ZaYV9W7Sxh2wGnLio1QV8n31DBwFv-Rg1wF2UXCqWJ5nOoeI06tKtxT0pOCM_D1Ah-6DBwKTbwba9-8f1e-40ca-9b5b-a0b3f719ef34', 'captcha_service': 'hcaptcha'}
+{'captcha_key': ['captcha-required'], 'captcha_sitekey': '--Woyg0lFs9RSmfR69tWlPeDuePXOQ_oxE2EtEvVBAKoILKIS42z2VfnfuGcpiH7LIiIpkiB2wfJpQYUv_jG3Q6BERA', 'captcha_service': 'hcaptcha'}
 
 http-post
 ---------
-POST /API/V9/AUTH/LOGIN?id=rW1M5pVde9KY HTTP/1.1
+POST /API/V9/AUTH/LOGIN?sad=yes HTTP/1.1
 Host: discord.com
 X-Super-Properties: eyJvcyI6IldpbH0=
+X-Fingerprint: 1008685949565288488.PHKwXlnLkLRgcC2N8fC2zosjGKc
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+b: 8Qwdy8k1LfnC
 Content-Length: 145
 
-{'login':'a@a.com','password':'bsdfv','undelete':false,'capcbppoZoXAUeR1RiNh9NvUE7arNotcha_key':null,'login_source':null,'gift_code_sku_id':null}
+{'login':'a@a.com','password':'bsdfv','undelete':false,'capMl6axjTOnr49ZZGv6DTxgTmm8JYtcha_key':null,'login_source':null,'gift_code_sku_id':null}
 
 HTTP/1.1 200 OK
 Content-Length: 127
@@ -224,7 +232,7 @@ X-Content-Type-Options: nosniff
 Server: cloudflare
 CF-RAY: 73b14ca4bbd187d8-SIN
 
-vkh6NA
+{'captcha_key': ['captcha-required'], 'captcha_sitekey': 'f5561_kyvKAba9-8f1e-40ca-9b5b-a0b3f719ef34', 'captcha_service': 'hcaptcha'}
 
 
 [+] POST 3x check passed
