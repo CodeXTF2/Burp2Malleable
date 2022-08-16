@@ -1,6 +1,7 @@
 # Burp2Malleable
 This is a quick python utility I wrote to turn HTTP requests from burp suite into Cobalt Strike Malleable C2 profiles.  
-#### Update: Prepend and append support added!
+
+#### Feel free to create issues for feature requests or bugs etc!
 
 ## Installation
 ```
