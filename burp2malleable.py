@@ -4,6 +4,11 @@ import os
 from malleablec2 import Profile
 from malleablec2.components import *
 from termcolor import colored
+import base64
+import random
+import string
+
+letters = string.ascii_lowercase
 
 toolbanner = """
 █▄▄ █░█ █▀█ █▀█  ▀█  █▀▄▀█ ▄▀█ █░░ █░░ █▀▀ ▄▀█ █▄▄ █░░ █▀▀
@@ -26,6 +31,18 @@ def printbold(msg):
 def printmsg(msg):
   print(colored("[*] ","cyan",attrs=["bold"]) + msg)
 
+
+def malleable_encode(string,encoding):
+    if encoding == "base64":
+        return base64.b64encode(string.encode('utf-8')).decode('utf-8')
+    elif encoding == "base64url":
+        return base64.urlsafe_b64encode("HSADADASS".encode('utf-8')).decode('utf-8')
+    elif encoding == "netbios":
+        return ''.join([chr((ord(c)>>4)+ord('a'))+chr((ord(c)&0xF)+ord('a')) for c in string])
+    elif encoding == "netbiosu":
+        return ''.join([chr((ord(c)>>4)+ord('A'))+chr((ord(c)&0xF)+ord('A')) for c in string])
+    
+
 def blend(string):
     isok = False
     while not isok:
@@ -34,18 +51,25 @@ def blend(string):
         strarray = string.split(toreplace)
         while len(strarray) <2:
             strarray.append("")
-        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}dGVzdGRhdGE={strarray[1]}\n","green"))
+        print("What encoding would you like to apply to the data?")
+        for x in ['base64','base64url','netbios','netbiosu']:
+            printmsg(x)
+        encoding = input("> ")
+        randomstring = ''.join(random.choice(letters) for i in range(10))
+        encodedstring = malleable_encode(randomstring, encoding)
+        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}{encodedstring}{strarray[1]}\n","green"))
         isok_str = input("Does this look ok? (Y/n)\n> ")
         if isok_str == '' or isok_str.lower() == 'y':
             isok=True
 
-    return strarray[0],strarray[1]
+    return strarray[0],strarray[1],encoding
 
-def storelocation(item):
+def storelocation_req(item):
     global reqheaders
     global reqparams_dict
     prepend = ''
     append = ''
+    encoding = 'base64url'
     location = input(f"Where do you want to store {item}?\n\t1. Header\n\t2. Body\n\t3. URI-Param\n>")
     if location == "1":
         print("These are your current headers")
@@ -53,24 +77,48 @@ def storelocation(item):
             printmsg(f"{x}: {reqheaders[x]}")
         headername = input("Header name: ")
         if headername in reqheaderlist:
-            prepend,append = blend(str(reqheaders.get(headername)))
+            prepend,append,encoding = blend(str(reqheaders.get(headername)))
             reqheaders.pop(headername)
         else:
             printmsg(f"Header {headername} not found. Added as new header")
-        return ['header',headername,prepend,append]
+        return ['header',headername,prepend,append,encoding]
     elif location == "3":
         print("These are your current params")
         for x in reqparams_dict.keys():
             printmsg(f"{x}={reqparams_dict[x]}")
         paramname = input("Param name: ")
         if paramname in reqparams_dict.keys():
-            prepend,append = blend(reqparams_dict[paramname])
+            prepend,append,encoding = blend(reqparams_dict[paramname])
             reqparams_dict.pop(paramname)
         else:
-            printmsg(f"Parameter {paramname} not found. Added as new header")
-        return ['uriparam',paramname,prepend,append]
+            printmsg(f"Parameter {paramname} not found. Added as new parameter")
+        return ['uriparam',paramname,prepend,append,encoding]
     else:
-        return ['body','']
+        prepend,append,encoding = blend(reqbody)
+        return ['body','',prepend,append,encoding]
+
+
+def storelocation_res(item):
+    global resheaders
+    global resparams_dict
+    prepend = ''
+    append = ''
+    encoding = 'base64url'
+    location = input(f"Where do you want to store {item}?\n\t1. Header\n\t2. Body\n>")
+    if location == "1":
+        print("These are your current headers")
+        for x in resheaders.keys():
+            printmsg(f"{x}: {reqheaders[x]}")
+        headername = input("Header name: ")
+        if headername in resheaderlist:
+            prepend,append,encoding = blend(str(resheaders.get(headername)))
+            resheaders.pop(headername)
+        else:
+            printmsg(f"Header {headername} not found. Added as new header")
+        return ['header',headername,prepend,append,encoding]
+    else:
+        prepend,append,encoding = blend(resbody)
+        return ['body','',prepend,append,encoding]
 
 #is the req body used already
 
@@ -133,38 +181,37 @@ original += "#\n#\n"
 
 uri_used = False
 body_used = False
-beaconmeta = storelocation("Beacon metadata")
+beaconmeta = storelocation_req("Beacon metadata")
 while beaconmeta [0] == "body" and reqmethod != "POST":
     printfail(f"Request body may only be used in POST requests. This is a {reqmethod} request.")
-    beaconmeta = storelocation("Beacon metadata")
+    beaconmeta = storelocation_req("Beacon metadata")
 
 
-beaconid = storelocation("Beacon ID")
+beaconid = storelocation_req("Beacon ID")
 while beaconid[0] == "body" and reqmethod != "POST":
     printfail(f"Request body may only be used in POST requests. This is a {reqmethod} request.")
-    beaconid = storelocation("Beacon ID")
+    beaconid = storelocation_req("Beacon ID")
 while beaconid[0] == "body" and body_used:
     printfail(f"Request body already in use")
-    beaconid = storelocation("Beacon ID")
+    beaconid = storelocation_req("Beacon ID")
 if beaconid[0] == "body":
     body_used = True
 
 
 
-beaconresponse = storelocation("Beacon response")
+beaconresponse = storelocation_req("Beacon response")
 while beaconresponse[0] == "body" and reqmethod != "POST":
     printfail(f"Request body may only be used in POST requests. This is a {reqmethod} request.")
-    beaconresponse = storelocation("Beacon response")
+    beaconresponse = storelocation_req("Beacon response")
 while beaconresponse[0] == "body" and body_used:
     printfail(f"Request body already in use")
-    beaconresponse = storelocation("Beacon ID")
+    beaconresponse = storelocation_req("Beacon ID")
 if beaconid[0] == "body":
     body_used = True
 
-taskingprepend,taskingappend = blend(resbody)
+beacontaskings = storelocation_res("Beacon taskings")
 
-# taskingprepend = input("What would you like to prepend to the beacon taskings in the response body?\n> ")
-# taskingappend = input("What would you like to apppend to the beacon taskings in the response body?\n> ")
+
 
 profilebanner = """
 ############################################################################
@@ -193,7 +240,7 @@ for x in reqparams_dict.keys():
 
 
 metadata.add_statement("mask")
-metadata.add_statement("base64url")
+metadata.add_statement(beaconmeta[4])
 
 #metadata
 if beaconmeta[0] == "body":
@@ -222,12 +269,17 @@ reshalf2 = resbody[len(resbody)//2:]
 
 output_get.add_statement("mask")
 output_get.add_statement("base64url")
-output_get.add_statement("prepend",reshalf1)
-output_get.add_statement("prepend",taskingprepend)
-output_get.add_statement("append",taskingappend)
-output_get.add_statement("append",reshalf2)
-#beacon tasking
-output_get.add_statement("print")
+#metadata
+if beacontaskings[0] == "body":
+    output_get.add_statement("prepend",beacontaskings[2])
+    output_get.add_statement("append",beacontaskings[3])
+    output_get.add_statement("print")
+    printmsg(f"Storing beacon taskings in request body")
+elif beacontaskings[0] == "header":
+    output_get.add_statement("prepend",beacontaskings[2])
+    output_get.add_statement("append",beacontaskings[3])
+    output_get.add_statement("header",beacontaskings[1])
+    printmsg(f"Storing beacon beacon taskings in request header {beacontaskings[1]}")
 
 
 
@@ -277,7 +329,7 @@ else:
 
 post_id = IdBlock()
 post_id.add_statement("mask")
-post_id.add_statement("base64url")
+post_id.add_statement(beaconid[4])
 #beaconid
 if beaconid[0] == "body":
     post_id.add_statement("print")
@@ -303,8 +355,13 @@ server_post = ServerBlock()
 
 #add the output_post block for the server
 output_post = OutputBlock()
+#add the response body
+reshalf1 = resbody[:len(resbody)//2]
+reshalf2 = resbody[len(resbody)//2:]
 output_post.add_statement("mask")
 output_post.add_statement("base64url")
+output_post.add_statement("prepend",reshalf1)
+output_post.add_statement("append",reshalf2)
 output_post.add_statement("print")
 server_post.add_code_block(output_post)
 
