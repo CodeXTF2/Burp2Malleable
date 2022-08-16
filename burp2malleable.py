@@ -49,6 +49,9 @@ def blend(string):
         print("The current value of the field is:\n" + colored(string,"green"))
         toreplace = input("\nWhat part would you like to replace with the data?\n> ")
         strarray = string.split(toreplace)
+        print(strarray)
+        prepend = strarray[0]
+        append = toreplace.join(strarray[1:])
         while len(strarray) <2:
             strarray.append("")
         print("What encoding would you like to apply to the data?")
@@ -57,12 +60,12 @@ def blend(string):
         encoding = input("> ")
         randomstring = ''.join(random.choice(letters) for i in range(10))
         encodedstring = malleable_encode(randomstring, encoding)
-        print(f"The resulting field will look something like this:\n" + colored(f"{strarray[0]}{encodedstring}{strarray[1]}\n","green"))
+        print(f"The resulting field will look something like this:\n" + colored(f"{prepend}{encodedstring}{append}\n","green"))
         isok_str = input("Does this look ok? (Y/n)\n> ")
         if isok_str == '' or isok_str.lower() == 'y':
             isok=True
 
-    return strarray[0],strarray[1],encoding
+    return prepend,append,encoding
 
 def storelocation_req(item):
     global reqheaders
