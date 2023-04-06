@@ -111,9 +111,9 @@ def storelocation_res(item):
     if location == "1":
         print("These are your current headers")
         for x in resheaders.keys():
-            printmsg(f"{x}: {reqheaders[x]}")
+            printmsg(f"{x}: {resheaders[x]}")
         headername = input("Header name: ")
-        if headername in resheaderlist:
+        if headername in resheaders:
             prepend,append,encoding = blend(str(resheaders.get(headername)))
             resheaders.pop(headername)
         else:
@@ -173,14 +173,9 @@ reqheaderlist = []
 for x in reqheaders.items():
     reqheaderlist.append(x[0])
 
-
 original = "# Original HTTP request\n#\n" + reqfile_commented + "\n#"
 original += "\n# Original HTTP response\n#\n" + resfile_commented + "\n#"
 original += "#\n#\n"
-
-
-
-
 
 uri_used = False
 body_used = False
@@ -200,8 +195,6 @@ while beaconid[0] == "body" and body_used:
 if beaconid[0] == "body":
     body_used = True
 
-
-
 beaconresponse = storelocation_req("Beacon response")
 while beaconresponse[0] == "body" and reqmethod != "POST":
     printfail(f"Request body may only be used in POST requests. This is a {reqmethod} request.")
@@ -212,9 +205,15 @@ while beaconresponse[0] == "body" and body_used:
 if beaconid[0] == "body":
     body_used = True
 
-beacontaskings = storelocation_res("Beacon taskings")
+def store_body():
+    printmsg("The beacon taskings are stored in response body.")
+    prepend = ''
+    append = ''
+    encoding = 'base64url'
+    prepend,append,encoding = blend(resbody)
+    return ['body','',prepend,append,encoding]
 
-
+beacontaskings = store_body();
 
 profilebanner = """
 ############################################################################
@@ -223,11 +222,8 @@ profilebanner = """
 ############################################################################
 """
 
-
 #create our profile
 profile = Profile.from_scratch()
-
-
 
 #http.get block
 http_get = HttpGetBlock()
@@ -273,18 +269,11 @@ reshalf2 = resbody[len(resbody)//2:]
 output_get.add_statement("mask")
 output_get.add_statement("base64url")
 #metadata
-if beacontaskings[0] == "body":
-    output_get.add_statement("prepend",beacontaskings[2])
-    output_get.add_statement("append",beacontaskings[3])
-    output_get.add_statement("print")
-    printmsg(f"Storing beacon taskings in request body")
-elif beacontaskings[0] == "header":
-    output_get.add_statement("prepend",beacontaskings[2])
-    output_get.add_statement("append",beacontaskings[3])
-    output_get.add_statement("header",beacontaskings[1])
-    printmsg(f"Storing beacon beacon taskings in request header {beacontaskings[1]}")
 
-
+output_get.add_statement("prepend",beacontaskings[2])
+output_get.add_statement("append",beacontaskings[3])
+output_get.add_statement("print")
+printmsg(f"[REQUIRED] Storing beacon taskings in request body")
 
 server_get.add_code_block(output_get)
 for x in resheaders.items():
@@ -293,17 +282,12 @@ for x in resheaders.items():
 http_get.add_code_block(client_get)
 http_get.add_code_block(server_get)
 
-
-
-
 #http.post block
 http_post = HttpPostBlock()
 http_post.set_option("verb", reqmethod)
 if requri == "/":
     requri += "/"
 http_post.set_option("uri", requri.upper())
-
-
 #http.post.client
 client_post = ClientBlock()
 for x in reqparams_dict.keys():
@@ -312,7 +296,6 @@ for x in reqparams_dict.keys():
 output_post = OutputBlock()
 output_post.add_statement("mask")
 output_post.add_statement("base64url")
-
 #beaconupload
 if beaconresponse[0] == "body":
     #add the req body
@@ -328,8 +311,6 @@ elif beaconresponse[0] == "uriparam":
 else:
     output_post.add_statement("header",beaconresponse[1])
     printmsg(f"Storing beacon response in request header {beaconresponse[1]}")
-
-
 post_id = IdBlock()
 post_id.add_statement("mask")
 post_id.add_statement(beaconid[4])
@@ -344,18 +325,12 @@ else:
     post_id.add_statement("header",beaconid[1])
     printmsg(f"Storing beacon ID in request header {beaconid[1]}")
 
-
 for x in reqheaders.items():
     client_post.add_statement("header", x[0], x[1])
-
 client_post.add_code_block(post_id)
 client_post.add_code_block(output_post)
-
-
-
 #http.post.server
 server_post = ServerBlock()
-
 #add the output_post block for the server
 output_post = OutputBlock()
 #add the response body
@@ -367,25 +342,14 @@ output_post.add_statement("prepend",reshalf1)
 output_post.add_statement("append",reshalf2)
 output_post.add_statement("print")
 server_post.add_code_block(output_post)
-
-
-
-
-
-
-
-
 for x in resheaders.items():
     server_post.add_statement("header", x[0], x[1])
 
 http_post.add_code_block(client_post)
 http_post.add_code_block(server_post)
-
-
 #build the profile
 profile.add_code_block(http_get)
 profile.add_code_block(http_post)
-
 with open("generated.profile","w+") as f:
     f.write(profilebanner + str(profile))
 printsuccess("Profile saved in generated.profile. Remember to run ./c2lint!")
